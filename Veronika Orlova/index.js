@@ -1,4 +1,4 @@
-/*---------Класс Персонаж-----------*/
+/*---------РљР»Р°СЃСЃ РџРµСЂСЃРѕРЅР°Р¶-----------*/
 function Character(type, name, aHeroOrAMonster){
   this.type = type;
   this.life = type.maxLife;
@@ -28,7 +28,7 @@ Character.prototype.getIsDrunk = function() {
   return this.isDrunk;
 }
 
-/* Атака this на obj*/
+/* РђС‚Р°РєР° this РЅР° obj*/
 Character.prototype.attack = function(obj) {
   obj.changeLife(this.getDamage());
 }
@@ -47,43 +47,43 @@ Character.prototype.setIsDrunk = function() {
 
 Character.prototype.ifItsDrunk = function() {
   if(this.isDrunk)
-    return ' Хитрый';
+    return ' РҐРёС‚СЂС‹Р№';
   else
     return '';
 }
 
-/*Вероятность 25%, что участник примет зелье*/
+/*Р’РµСЂРѕСЏС‚РЅРѕСЃС‚СЊ 25%, С‡С‚Рѕ СѓС‡Р°СЃС‚РЅРёРє РїСЂРёРјРµС‚ Р·РµР»СЊРµ*/
 Character.prototype.drinkAPotion = function() {
   var chance = getRandomArbitrary(1, 5);
   if (chance === 4) {
     this.setIsDrunk();
-    console.log('    решивший принять зелье и отныне зовущийся хитрым');
+    console.log('    СЂРµС€РёРІС€РёР№ РїСЂРёРЅСЏС‚СЊ Р·РµР»СЊРµ Рё РѕС‚РЅС‹РЅРµ Р·РѕРІСѓС‰РёР№СЃСЏ С…РёС‚СЂС‹Рј');
   }
 }
 
-/* Получение урона с учетом скила */
+/* РџРѕР»СѓС‡РµРЅРёРµ СѓСЂРѕРЅР° СЃ СѓС‡РµС‚РѕРј СЃРєРёР»Р° */
 Character.prototype.changeLife = function(dmg) {
   if (this.shouldUseSkill() && ((this.getAHeroOrAMonster() === 'hero' && !this.getIsDrunk()) ||
                                 (this.getAHeroOrAMonster() === 'monster' && this.getIsDrunk()))) {
-    console.log(this.getName() + ' использует способность класса и остается неуезвивым');
+    console.log(this.getName() + ' РёСЃРїРѕР»СЊР·СѓРµС‚ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РєР»Р°СЃСЃР° Рё РѕСЃС‚Р°РµС‚СЃСЏ РЅРµСѓРµР·РІРёРІС‹Рј');
     this.counter--;   
   } else {
       this.life -= dmg;
     } 
 }
 
-/*C учетом скила*/
+/*C СѓС‡РµС‚РѕРј СЃРєРёР»Р°*/
 Character.prototype.getDamage = function() {
   if (this.shouldUseSkill() && ((this.getAHeroOrAMonster() === 'hero' && this.getIsDrunk()) ||
                                 (this.getAHeroOrAMonster() === 'monster' && !this.getIsDrunk()))) {
-    console.log(this.getName() + ' использует способность класса и наносимый им урон увеличивается в 2 раза');
+    console.log(this.getName() + ' РёСЃРїРѕР»СЊР·СѓРµС‚ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РєР»Р°СЃСЃР° Рё РЅР°РЅРѕСЃРёРјС‹Р№ РёРј СѓСЂРѕРЅ СѓРІРµР»РёС‡РёРІР°РµС‚СЃСЏ РІ 2 СЂР°Р·Р°');
     this.counter--;
     return this.type.damage*2;
   }
   return this.type.damage;
 }
 
-/*---------Класс Герой-----------*/
+/*---------РљР»Р°СЃСЃ Р“РµСЂРѕР№-----------*/
 function Hero () {
   Character.apply(this, arguments);
 }
@@ -95,22 +95,22 @@ Hero.prototype.getGoodNames = function() {
   return Hero.goodNames;
 }
 
-Hero.THIEF = {maxLife: 50, damage: 10, class_name: "Вор"}
-Hero.WARRIOR = {maxLife: 70, damage: 6, class_name: "Воин"}
-Hero.WIZARD = {maxLife: 30, damage: 14, class_name: "Волшебник"}
+Hero.THIEF = {maxLife: 50, damage: 10, class_name: "Р’РѕСЂ"}
+Hero.WARRIOR = {maxLife: 70, damage: 6, class_name: "Р’РѕРёРЅ"}
+Hero.WIZARD = {maxLife: 30, damage: 14, class_name: "Р’РѕР»С€РµР±РЅРёРє"}
 Hero.arrayOfClasses = [Hero.THIEF, Hero.WARRIOR, Hero.WIZARD]
-Hero.goodNames = ['Сандрзера', 'Даволера', 'Джейгуст', 'Джонда', 'Годцер',
-                  'Бетдерса', 'Сандртон', 'Джейцер', 'Уторонд', 'Андузера']
-Hero.names = ['Сандрзера', 'Даволера', 'Джейгуст', 'Джонда', 'Годцер',
-              'Бетдерса', 'Сандртон', 'Джейцер', 'Уторонд', 'Андузера',
-              'Джейромби', 'Гилрик', 'Годна', 'Каласия', 'Керинса', 'Анса']
+Hero.goodNames = ['РЎР°РЅРґСЂР·РµСЂР°', 'Р”Р°РІРѕР»РµСЂР°', 'Р”Р¶РµР№РіСѓСЃС‚', 'Р”Р¶РѕРЅРґР°', 'Р“РѕРґС†РµСЂ',
+                  'Р‘РµС‚РґРµСЂСЃР°', 'РЎР°РЅРґСЂС‚РѕРЅ', 'Р”Р¶РµР№С†РµСЂ', 'РЈС‚РѕСЂРѕРЅРґ', 'РђРЅРґСѓР·РµСЂР°']
+Hero.names = ['РЎР°РЅРґСЂР·РµСЂР°', 'Р”Р°РІРѕР»РµСЂР°', 'Р”Р¶РµР№РіСѓСЃС‚', 'Р”Р¶РѕРЅРґР°', 'Р“РѕРґС†РµСЂ',
+              'Р‘РµС‚РґРµСЂСЃР°', 'РЎР°РЅРґСЂС‚РѕРЅ', 'Р”Р¶РµР№С†РµСЂ', 'РЈС‚РѕСЂРѕРЅРґ', 'РђРЅРґСѓР·РµСЂР°',
+              'Р”Р¶РµР№СЂРѕРјР±Рё', 'Р“РёР»СЂРёРє', 'Р“РѕРґРЅР°', 'РљР°Р»Р°СЃРёСЏ', 'РљРµСЂРёРЅСЃР°', 'РђРЅСЃР°']
 
 function heroFactory(type) {
   var nameNumber = getRandomArbitrary(0, Hero.names.length);
   return new Hero(type, Hero.names[nameNumber], 'hero');
 }
 
-/*---------Класс Монстр-----------*/
+/*---------РљР»Р°СЃСЃ РњРѕРЅСЃС‚СЂ-----------*/
 function Monster () {
   Character.apply(this, arguments);
 }
@@ -122,24 +122,24 @@ Monster.prototype.getGoodNames = function() {
   return Monster.goodNames;
 }
 
-Monster.GOBLIN = {maxLife: 50, damage: 10, class_name: "Гоблин"}
-Monster.ORC_CROWD = {maxLife: 70, damage: 6, class_name: "Толпа орков"}
-Monster.VAMPIRE = {maxLife: 30, damage: 14, class_name: "Вампир"}
+Monster.GOBLIN = {maxLife: 50, damage: 10, class_name: "Р“РѕР±Р»РёРЅ"}
+Monster.ORC_CROWD = {maxLife: 70, damage: 6, class_name: "РўРѕР»РїР° РѕСЂРєРѕРІ"}
+Monster.VAMPIRE = {maxLife: 30, damage: 14, class_name: "Р’Р°РјРїРёСЂ"}
 Monster.arrayOfClasses = [Monster.GOBLIN, Monster.ORC_CROWD, Monster.VAMPIRE]
-Monster.goodNames = ['Эмиель Регис Рогеллек Терзиефф-Годфрой', 'Детлафф вар дер Эретайн', 
-                     'Хагмар', 'Ориана', 'Зелбибур', 'Скузжетов', 'Пигатон', 'Газбабахс', 
-                     'Хамрабахс', 'Стелзлатель']
-Monster.names = ['Эмиель Регис Рогеллек Терзиефф-Годфрой', 'Детлафф вар дер Эретайн', 
-                 'Хагмар', 'Ориана', 'Зелбибур', 'Скузжетов', 'Пигатон', 'Газбабахс',
-                 'Хамрабахс', 'Стелзлатель', 'Гровевид', 'Зарерикс', 'Гобгатяп',
-                 'Взрызагс', 'Темзеганс', 'Гризларезли']
+Monster.goodNames = ['Р­РјРёРµР»СЊ Р РµРіРёСЃ Р РѕРіРµР»Р»РµРє РўРµСЂР·РёРµС„С„-Р“РѕРґС„СЂРѕР№', 'Р”РµС‚Р»Р°С„С„ РІР°СЂ РґРµСЂ Р­СЂРµС‚Р°Р№РЅ', 
+                     'РҐР°РіРјР°СЂ', 'РћСЂРёР°РЅР°', 'Р—РµР»Р±РёР±СѓСЂ', 'РЎРєСѓР·Р¶РµС‚РѕРІ', 'РџРёРіР°С‚РѕРЅ', 'Р“Р°Р·Р±Р°Р±Р°С…СЃ', 
+                     'РҐР°РјСЂР°Р±Р°С…СЃ', 'РЎС‚РµР»Р·Р»Р°С‚РµР»СЊ']
+Monster.names = ['Р­РјРёРµР»СЊ Р РµРіРёСЃ Р РѕРіРµР»Р»РµРє РўРµСЂР·РёРµС„С„-Р“РѕРґС„СЂРѕР№', 'Р”РµС‚Р»Р°С„С„ РІР°СЂ РґРµСЂ Р­СЂРµС‚Р°Р№РЅ', 
+                 'РҐР°РіРјР°СЂ', 'РћСЂРёР°РЅР°', 'Р—РµР»Р±РёР±СѓСЂ', 'РЎРєСѓР·Р¶РµС‚РѕРІ', 'РџРёРіР°С‚РѕРЅ', 'Р“Р°Р·Р±Р°Р±Р°С…СЃ',
+                 'РҐР°РјСЂР°Р±Р°С…СЃ', 'РЎС‚РµР»Р·Р»Р°С‚РµР»СЊ', 'Р“СЂРѕРІРµРІРёРґ', 'Р—Р°СЂРµСЂРёРєСЃ', 'Р“РѕР±РіР°С‚СЏРї',
+                 'Р’Р·СЂС‹Р·Р°РіСЃ', 'РўРµРјР·РµРіР°РЅСЃ', 'Р“СЂРёР·Р»Р°СЂРµР·Р»Рё']
 
 function monsterFactory(type){
   var nameNumber = getRandomArbitrary(0, Monster.names.length);
   return new Monster(type, Monster.names[nameNumber], 'monster');
 }
 
-/*------Класс Игра--------*/
+/*------РљР»Р°СЃСЃ РРіСЂР°--------*/
 function Game(competitor1, competitor2) {
   this.competitor1 = competitor1;
   this.competitor2 = competitor2;
@@ -155,40 +155,40 @@ Game.prototype.getCompetitor2 = function() {
 
 Game.prototype.fight = function () {
   var competitor1name = this.competitor1.ifItsDrunk() + ' ' + this.competitor1.getClass_name() +
-      " по имени " + this.competitor1.getName();
+      " РїРѕ РёРјРµРЅРё " + this.competitor1.getName();
   var competitor2name = this.competitor2.ifItsDrunk() + ' ' + this.competitor2.getClass_name() +
-              " по имени " + this.competitor2.getName();
-  console.log('\n------------\nСражаются' + competitor1name + ' (жизни: ' + this.competitor1.getLife() +
-              '; урон ' + this.competitor1.getDamage() + ')' + ' и' + competitor2name + ' (жизни: ' + 
-              this.competitor2.getLife() + '; урон ' + this.competitor2.getDamage() + ')');
+              " РїРѕ РёРјРµРЅРё " + this.competitor2.getName();
+  console.log('\n------------\nРЎСЂР°Р¶Р°СЋС‚СЃСЏ' + competitor1name + ' (Р¶РёР·РЅРё: ' + this.competitor1.getLife() +
+              '; СѓСЂРѕРЅ ' + this.competitor1.getDamage() + ')' + ' Рё' + competitor2name + ' (Р¶РёР·РЅРё: ' + 
+              this.competitor2.getLife() + '; СѓСЂРѕРЅ ' + this.competitor2.getDamage() + ')');
   while (this.competitor1.isAlive() && this.competitor2.isAlive()) {
-    console.log('Бьет ' + this.competitor1.getName());
+    console.log('Р‘СЊРµС‚ ' + this.competitor1.getName());
     console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
-                'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
+                'РҐРї;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'РҐРї');
     this.competitor1.attack(this.competitor2);
-    console.log('Бьет ' + this.competitor2.getName());
+    console.log('Р‘СЊРµС‚ ' + this.competitor2.getName());
     console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
-                'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
+                'РҐРї;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'РҐРї');
     this.competitor2.attack(this.competitor1);
   }
   console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
-            'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
+            'РҐРї;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'РҐРї');
   if(this.competitor1.isAlive()) {
-    console.log('^^^^^^^^^^^^^\nПобедил' + competitor1name);
+    console.log('^^^^^^^^^^^^^\nРџРѕР±РµРґРёР»' + competitor1name);
     return this.competitor1;
   }
   else if(this.competitor2.isAlive()) {
-    console.log('^^^^^^^^^^^^^\nПобедил' + competitor2name);
+    console.log('^^^^^^^^^^^^^\nРџРѕР±РµРґРёР»' + competitor2name);
     return this.competitor2;
   }
   else {
-    console.log('^^^^^^^^^^^^^\nОбъявляется нечья');
+    console.log('^^^^^^^^^^^^^\nРћР±СЉСЏРІР»СЏРµС‚СЃСЏ РЅРµС‡СЊСЏ');
     return "noone";
   }
 }
 
 
-/*-------Класс Турнир-------*/
+/*-------РљР»Р°СЃСЃ РўСѓСЂРЅРёСЂ-------*/
 function Tournament(stack) {
   this.stack = stack;
   this.winner = "no winner";
@@ -204,12 +204,12 @@ Tournament.prototype.setStack = function(stack) {
 
 Tournament.prototype.faceControlHelpfulFunc = function(stack, amont){
   for (var i = 0; i < amont; i++) {
-    console.log(stack[i].getClass_name() + " по имени " + stack[i].getName());
+    console.log(stack[i].getClass_name() + " РїРѕ РёРјРµРЅРё " + stack[i].getName());
     stack[i].drinkAPotion();
     if(stack[i].getGoodNames().indexOf(stack[i].getName()) != -1)
-      console.log("        Допущен по турнира");
+      console.log("        Р”РѕРїСѓС‰РµРЅ РїРѕ С‚СѓСЂРЅРёСЂР°");
     else {
-      console.log("        Не допущен по турнира");
+      console.log("        РќРµ РґРѕРїСѓС‰РµРЅ РїРѕ С‚СѓСЂРЅРёСЂР°");
       stack.splice(i, 1);
       i--;
       amont--;
@@ -219,20 +219,20 @@ Tournament.prototype.faceControlHelpfulFunc = function(stack, amont){
 }
 
 Tournament.prototype.faceControl = function() {
-  console.log("Зарегистрировавшиеся участники:");
+  console.log("Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РІС€РёРµСЃСЏ СѓС‡Р°СЃС‚РЅРёРєРё:");
   this.setStack(this.faceControlHelpfulFunc(this.getStack(), this.getStack().length));
 }
 
 Tournament.prototype.startTournament = function() {
-  console.log('\nСписок участников в порядке выхода на арену:');
+  console.log('\nРЎРїРёСЃРѕРє СѓС‡Р°СЃС‚РЅРёРєРѕРІ РІ РїРѕСЂСЏРґРєРµ РІС‹С…РѕРґР° РЅР° Р°СЂРµРЅСѓ:');
   for (var i = 0; i < this.getStack().length; i++) {
     var competitor = this.getStack()[this.getStack().length - 1 - i];
     console.log((i + 1) + '. ' + competitor.ifItsDrunk() + ' ' + competitor.getClass_name() + 
-                " по имени " + competitor.getName() + ' (жизни: ' + competitor.getLife() + '; урон ' +
+                " РїРѕ РёРјРµРЅРё " + competitor.getName() + ' (Р¶РёР·РЅРё: ' + competitor.getLife() + '; СѓСЂРѕРЅ ' +
                competitor.getDamage() + ')');
     
   }
-  console.log("\nТурнир начинается!");
+  console.log("\nРўСѓСЂРЅРёСЂ РЅР°С‡РёРЅР°РµС‚СЃСЏ!");
   while(this.getStack().length > 1) {
     var competitor1 = this.getStack().pop();
     var competitor2 = this.getStack().pop();
@@ -247,11 +247,11 @@ Tournament.prototype.startTournament = function() {
   if (this.getStack().length === 1) {
     var winnerOfTournament = this.getStack()[0];
     this.winner = winnerOfTournament.ifItsDrunk() + ' ' + winnerOfTournament.getClass_name() +
-      " по имени " + winnerOfTournament.getName();
-    console.log('\n*************\nПобедитель турнира: ' + this.winner);
+      " РїРѕ РёРјРµРЅРё " + winnerOfTournament.getName();
+    console.log('\n*************\nРџРѕР±РµРґРёС‚РµР»СЊ С‚СѓСЂРЅРёСЂР°: ' + this.winner);
   }
   else
-    console.log('\n*************\nУвы, достойного не нашлось');
+    console.log('\n*************\nРЈРІС‹, РґРѕСЃС‚РѕР№РЅРѕРіРѕ РЅРµ РЅР°С€Р»РѕСЃСЊ');
 }
 
 /*----------------*/
@@ -260,7 +260,7 @@ function getRandomArbitrary(min, max) {
 }
 
 function registration(N) {
-  console.log('Объявляется турнир на ' + N + ' участников!');
+  console.log('РћР±СЉСЏРІР»СЏРµС‚СЃСЏ С‚СѓСЂРЅРёСЂ РЅР° ' + N + ' СѓС‡Р°СЃС‚РЅРёРєРѕРІ!');
   var stack = [];
   for (var i = 0; i < N; i++) {
     var monsterOrHero = getRandomArbitrary(0, 2);
