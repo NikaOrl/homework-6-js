@@ -6,6 +6,8 @@ function Character(type, name, aHeroOrAMonster){
   this.name = name;
   this.isDrunk = false;
   this.aHeroOrAMonster = aHeroOrAMonster;
+  this.isUsingLifeSkill = false;
+  this.isUsingDamageSkill = false;
 }
 
 Character.prototype.getClass_name = function() {
@@ -61,22 +63,34 @@ Character.prototype.drinkAPotion = function() {
   }
 }
 
-/* Получение урона с учетом скила */
-Character.prototype.changeLife = function(dmg) {
+Character.prototype.changeLifeSkill = function() {
   if (this.shouldUseSkill() && ((this.getAHeroOrAMonster() === 'hero' && !this.getIsDrunk()) ||
                                 (this.getAHeroOrAMonster() === 'monster' && this.getIsDrunk()))) {
-    console.log(this.getName() + ' использует способность класса и остается неуезвивым');
+    this.isUsingLifeSkill = true;
+    console.log('    ' + this.getName() + ' использует способность класса и остается неуезвивым');
+  }
+}
+
+Character.prototype.changeDamageSkill = function() {
+  if (this.shouldUseSkill() && ((this.getAHeroOrAMonster() === 'hero' && this.getIsDrunk()) ||
+                                (this.getAHeroOrAMonster() === 'monster' && !this.getIsDrunk()))) {
+    this.isUsingDamageSkill = true;
+    console.log('    ' + this.getName() + ' использует способность класса и наносимый им урон увеличивается в 2 раза');
+  }
+}
+
+/* Получение урона с учетом скила */
+Character.prototype.changeLife = function(dmg) {
+  if (this.isUsingLifeSkill && this.counter > 0) {
     this.counter--;   
   } else {
       this.life -= dmg;
-    } 
+  } 
 }
 
 /*C учетом скила*/
 Character.prototype.getDamage = function() {
-  if (this.shouldUseSkill() && ((this.getAHeroOrAMonster() === 'hero' && this.getIsDrunk()) ||
-                                (this.getAHeroOrAMonster() === 'monster' && !this.getIsDrunk()))) {
-    console.log(this.getName() + ' использует способность класса и наносимый им урон увеличивается в 2 раза');
+  if (this.isUsingDamageSkill && this.counter > 0) {
     this.counter--;
     return this.type.damage*2;
   }
@@ -158,31 +172,36 @@ Game.prototype.fight = function () {
       " по имени " + this.competitor1.getName();
   var competitor2name = this.competitor2.ifItsDrunk() + ' ' + this.competitor2.getClass_name() +
               " по имени " + this.competitor2.getName();
-  console.log('\n------------\nСражаются' + competitor1name + ' (жизни: ' + this.competitor1.getLife() +
+  
+  console.log('\n-------------------------\nСражаются' + competitor1name + ' (жизни: ' + this.competitor1.getLife() +
               '; урон ' + this.competitor1.getDamage() + ')' + ' и' + competitor2name + ' (жизни: ' + 
               this.competitor2.getLife() + '; урон ' + this.competitor2.getDamage() + ')');
-  while (this.competitor1.isAlive() && this.competitor2.isAlive()) {
-    console.log('Бьет ' + this.competitor1.getName());
-    console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
-                'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
-    this.competitor1.attack(this.competitor2);
-    console.log('Бьет ' + this.competitor2.getName());
-    console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
-                'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
-    this.competitor2.attack(this.competitor1);
-  }
+  
   console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
-            'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
+                'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
+  
+  while (this.competitor1.isAlive() && this.competitor2.isAlive()) {
+    this.competitor1.attack(this.competitor2);
+    this.competitor2.attack(this.competitor1);
+    console.log(this.competitor1.getName() + ': ' + this.competitor1.getLife() +
+                'Хп;  ' + this.competitor2.getName() + ': '  + this.competitor2.getLife() + 'Хп');
+    if(this.competitor1.isAlive() && this.competitor2.isAlive()) {
+      this.competitor1.changeLifeSkill();
+      this.competitor1.changeDamageSkill();
+      this.competitor2.changeLifeSkill();
+      this.competitor2.changeDamageSkill();
+    }
+  }
   if(this.competitor1.isAlive()) {
-    console.log('^^^^^^^^^^^^^\nПобедил' + competitor1name);
+    console.log('........................\nПобедил' + competitor1name);
     return this.competitor1;
   }
   else if(this.competitor2.isAlive()) {
-    console.log('^^^^^^^^^^^^^\nПобедил' + competitor2name);
+    console.log('........................\nПобедил' + competitor2name);
     return this.competitor2;
   }
   else {
-    console.log('^^^^^^^^^^^^^\nОбъявляется нечья');
+    console.log('........................\nОбъявляется нечья');
     return "noone";
   }
 }
@@ -241,6 +260,8 @@ Tournament.prototype.startTournament = function() {
     if(winner !== "noone") {
       winner.life = winner.type.maxLife;
       winner.counter = 2;
+      winner.isUsingLifeSkill = false;
+      winner.isUsingDamageSkill = false;
       this.getStack().push(winner);
     }
   }
@@ -248,10 +269,10 @@ Tournament.prototype.startTournament = function() {
     var winnerOfTournament = this.getStack()[0];
     this.winner = winnerOfTournament.ifItsDrunk() + ' ' + winnerOfTournament.getClass_name() +
       " по имени " + winnerOfTournament.getName();
-    console.log('\n*************\nПобедитель турнира: ' + this.winner);
+    console.log('\n*************************\nПобедитель турнира: ' + this.winner);
   }
   else
-    console.log('\n*************\nУвы, достойного не нашлось');
+    console.log('\n*************************\nУвы, достойного не нашлось');
 }
 
 /*----------------*/
